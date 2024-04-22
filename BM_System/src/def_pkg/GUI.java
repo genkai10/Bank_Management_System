@@ -128,6 +128,13 @@ public class GUI {
 						frame.validate();
 						openAccountantMenu(frame, accountant);
 					}
+					else if( user.getType().compareTo("KYC_Manager") == 0 ) {
+						KYC_Manager KYC = new KYC_Manager( user.getName() );
+						frame.remove(f);
+						frame.repaint();
+						frame.validate();
+						openKYCManagerMenu(frame, KYC);
+					}
 				}		
 			}
 		});
@@ -135,6 +142,132 @@ public class GUI {
 	}
 	
 	
+	// KYC Manager Menu
+		void openKYCManagerMenu(JFrame frame, KYC_Manager kycManager) {
+		    JPanel f = new JPanel();
+		    f.setBackground(Color.white);
+
+		    // User Name label
+		    JLabel lUser = new JLabel(kycManager.getName());
+		    lUser.setFont(lUser.getFont().deriveFont(30f));
+		    lUser.setBounds(100, 50, 300, 40);
+		    f.add(lUser);
+
+		    // Designation label
+		    JLabel lDesg = new JLabel("KYC Manager");
+		    lDesg.setBounds(100, 80, 100, 40);
+		    f.add(lDesg);
+
+		    // Perform KYC button
+		    JButton btnPerformKYC = new JButton("Perform KYC");
+		    btnPerformKYC.setBackground(new Color(0, 204, 153));
+		    btnPerformKYC.setForeground(Color.white);
+		    btnPerformKYC.setBounds(100, 180, 150, 40);
+		    f.add(btnPerformKYC);
+
+		    // function to be executed when Perform KYC button is clicked
+		    btnPerformKYC.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		            frame.remove(f);
+		            frame.repaint();
+		            frame.validate();
+		            performKYCForm(frame, kycManager);
+		        }
+		    });
+		    
+
+		    // Sign Out Button
+		    JButton btn_sign_out = new JButton("Sign Out");
+		    btn_sign_out.setBackground(new Color(0, 204, 153));
+		    btn_sign_out.setForeground(Color.white);
+		    btn_sign_out.setBounds(650, 30, 100, 30);
+		    f.add(btn_sign_out);
+
+		    // function to be executed when Sign Out Button is clicked
+		    btn_sign_out.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		            frame.remove(f);
+		            frame.repaint();
+		            frame.validate();
+		            Login_Account user = new Login_Account();
+		            openSignInForm(frame, user);
+		        }
+		    });
+
+		    f.setLayout(null);
+		    frame.setContentPane(f);
+		    frame.setVisible(true);
+		}
+		
+		void performKYCForm(JFrame frame, KYC_Manager kycManager) {
+		    JPanel f = new JPanel();
+		    f.setBackground(Color.white);
+		    
+		    // KYC Label
+		    JLabel lKYC = new JLabel("Perform KYC");
+		    lKYC.setFont(lKYC.getFont().deriveFont(30f));
+		    lKYC.setBounds(250, 50, 200, 40);
+		    f.add(lKYC);
+		    
+		    // Client ID Label
+		    JLabel lClientID = new JLabel("Enter Client ID:");
+		    lClientID.setBounds(150, 100, 150, 40);
+		    f.add(lClientID);
+		    
+		    // Client ID Text Field
+		    JTextField tfClientID = new JTextField();
+		    tfClientID.setBounds(150, 130, 180, 25);
+		    f.add(tfClientID);
+		    
+		    // Client Address Label
+		    JLabel lClientAddress = new JLabel("Enter Client Address:");
+		    lClientAddress.setBounds(150, 160, 150, 40);
+		    f.add(lClientAddress);
+		    
+		    // Client Address Text Field
+		    JTextField tfClientAddress = new JTextField();
+		    tfClientAddress.setBounds(150, 190, 180, 25);
+		    f.add(tfClientAddress);
+		    
+		    // Perform KYC Button
+		    JButton btnPerformKYC = new JButton("Perform KYC");
+		    btnPerformKYC.setBackground(new Color(0, 204, 153));
+		    btnPerformKYC.setForeground(Color.white);
+		    btnPerformKYC.setBounds(150, 250, 150, 40);
+		    f.add(btnPerformKYC);
+		    
+		    // function to be executed when Perform KYC Button is clicked
+		    btnPerformKYC.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		            String clientID = tfClientID.getText();
+		            String clientAddress = tfClientAddress.getText();
+		            kycManager.performKYC(frame, clientID, clientAddress);
+		        }
+		    });
+		    
+		    // Sign Out Button
+		    JButton btnSignOut = new JButton("Sign Out");
+		    btnSignOut.setBackground(new Color(0, 204, 153));
+		    btnSignOut.setForeground(Color.white);
+		    btnSignOut.setBounds(650, 30, 100, 30);
+		    f.add(btnSignOut);
+		    
+		    // function to be executed when Sign Out Button is clicked
+		    btnSignOut.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		            frame.remove(f);
+		            frame.repaint();
+		            frame.validate();
+		            // Call the method to open the sign-in form
+		            openSignInForm(frame, new Login_Account());
+		        }
+		    });
+		    
+		    // displaying the new panel on frame    
+		    f.setLayout(null); 
+		    frame.setContentPane(f);
+		    frame.setVisible(true);
+		}
 	
 	
 	
@@ -418,14 +551,7 @@ public class GUI {
 		btnTransferMoney.setBackground( new Color(0, 204, 153) );
 		btnTransferMoney.setForeground(Color.white);
 		f.add(btnTransferMoney);
-	
-		// EStatement Button
-		JButton btnEStatement = new JButton("View EStatement");
-		btnEStatement.setBounds(100,250,150, 40);
-		btnEStatement.setBackground( new Color(0, 204, 153) );
-		btnEStatement.setForeground(Color.white);
-		f.add(btnEStatement);
-	
+		
 		// function to be executed when transfer money button is clicked
 		btnTransferMoney.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
@@ -433,16 +559,6 @@ public class GUI {
 				frame.repaint();
 				frame.validate();
 			    openTransferMoneyForm(frame, client, account);
-			}
-		});
-		
-		// function to be executed when View EStatement Button is clicked
-		btnEStatement.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-			    eStatement2(frame, client, account);
 			}
 		});
 		
@@ -824,181 +940,7 @@ public class GUI {
 		frame.setContentPane(f);
 		frame.setVisible(true);	
 	}
-	
-	
-	
-	
-	
-	// view e statement screen for client
-	void eStatement2(JFrame frame, Client client, Bank_Account account) {
-		JPanel f = new JPanel();
-		f.setBackground(Color.white);
 		
-		// E-Statement Label
-		JLabel lEStatement = new JLabel("E-Statement");
-		lEStatement.setFont( lEStatement.getFont().deriveFont(30f) );
-		lEStatement.setBounds(50,50,250, 40);
-		f.add(lEStatement);
-		
-		// From Date Label
-		JLabel lFrom = new JLabel("From   ( DD : MM : YY )");
-		lFrom.setBounds(50,100,150, 40);
-		f.add(lFrom);
-		
-		// To Date Label
-		JLabel lTo = new JLabel("To   ( DD : MM : YY )");
-		lTo.setBounds(450,100,150, 40);
-		f.add(lTo);
-		
-		// Day, Month and Year for From Date
-		SpinnerModel fromDayValues =  new SpinnerNumberModel(21, 1, 31, 1);  
-	    JSpinner fromDaySpinner = new JSpinner(fromDayValues);   
-	    fromDaySpinner.setBounds(50,130,40,25);    
-	    f.add(fromDaySpinner); 
-	    SpinnerModel fromMonthValues =  new SpinnerNumberModel(12, 1, 12, 1);  
-	    JSpinner fromMonthSpinner = new JSpinner(fromMonthValues);   
-	    fromMonthSpinner.setBounds(100,130,40,25);    
-	    f.add(fromMonthSpinner); 
-	    SpinnerModel fromYearValues =  new SpinnerNumberModel(2020, 2018, 2021, 1);  
-	    JSpinner fromYearSpinner = new JSpinner(fromYearValues);   
-	    fromYearSpinner.setBounds(150,130,55,25);    
-	    f.add(fromYearSpinner); 
-	    
-	    // Day, Month and Year for From Date
- 		SpinnerModel toDayValues =  new SpinnerNumberModel(30, 1, 31, 1);  
- 	    JSpinner toDaySpinner = new JSpinner(toDayValues);   
- 	    toDaySpinner.setBounds(450,130,40,25);    
- 	    f.add(toDaySpinner); 
- 	    SpinnerModel toMonthValues =  new SpinnerNumberModel(12, 1, 12, 1);  
- 	    JSpinner toMonthSpinner = new JSpinner( toMonthValues);   
- 	    toMonthSpinner.setBounds(500,130,40,25);    
- 	    f.add(toMonthSpinner); 
- 	    SpinnerModel toYearValues =  new SpinnerNumberModel(2020, 2018, 2021, 1);  
- 	    JSpinner toYearSpinner = new JSpinner(toYearValues);   
- 	    toYearSpinner.setBounds(550,130,55,25);    
- 	    f.add(toYearSpinner); 
- 	    
- 	    // E-Statement Button
- 		JButton btnEStatement = new JButton("Get E-Statement");
-		btnEStatement.setBackground( new Color(0, 204, 153) );
-		btnEStatement.setForeground(Color.white);
-		btnEStatement.setBounds(50,180,150, 30);
-		f.add(btnEStatement);
- 	    
-		// Download Button
-		JButton btnDownload = new JButton("Download");
-		btnDownload.setBackground( new Color(0, 204, 153) );
-		btnDownload.setForeground(Color.white);
-		btnDownload.setBounds(450,180,100, 30);
-		f.add(btnDownload);
-		btnDownload.setEnabled(false);
-		   
-		// creating table for transaction data
-		DefaultTableModel tableModel = new DefaultTableModel();
-		JTable table=new JTable(tableModel);   
-		tableModel.addColumn("Serial No");
-		tableModel.addColumn("Amount");
-		tableModel.addColumn("Type");
-		tableModel.addColumn("Date");
-		tableModel.addColumn("Time");
-		tableModel.addColumn("Account Number");
-		tableModel.addColumn("Reciever Account Number");
-		tableModel.addColumn("Cheque No");
-		table.setEnabled(false);
-		JScrollPane sp=new JScrollPane(table);
-		sp.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		sp.setBounds(50,230,700,150);  
-		f.add(sp);
-		sp.setVisible(true);
-		
-		// function to be executed when E Statement Button is clicked
-		btnEStatement.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tableModel.setRowCount(0);
-				//sp.setVisible(false);
-				
-				String From = String.valueOf(fromYearSpinner.getValue()) +"-"+ String.valueOf(fromMonthSpinner.getValue()) +"-"+ String.valueOf(fromDaySpinner.getValue());
-				String To = String.valueOf(toYearSpinner.getValue()) +"-"+ String.valueOf(toMonthSpinner.getValue()) +"-"+ String.valueOf(toDaySpinner.getValue());
-			
-				List<Transaction_History> list = client.getTransactions( account.getAccountNum(), From, To);
-				if( list.size() > 0 ) {
-					for( Transaction_History th: list) {
-						tableModel.addRow(new Object[] { th.getSerialNo(), th.getAmount(), th.getType(), th.getDate(), th.getTime(), th.getAccountNumber(), th.getRecvAccNum(), th.getChequeNum() });
-					}	
-					tableModel.fireTableDataChanged();
-					sp.setVisible(true);
-					//btnEStatement.setEnabled(false);
-					btnDownload.setEnabled(true);
-				}
-				else {
-					btnDownload.setEnabled(false);
-				}
-			}
-		});
-
-		// function to be executed when Download Button is clicked
-		btnDownload.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String From = String.valueOf(fromYearSpinner.getValue()) +"-"+ String.valueOf(fromMonthSpinner.getValue()) +"-"+ String.valueOf(fromDaySpinner.getValue());
-				String To = String.valueOf(toYearSpinner.getValue()) +"-"+ String.valueOf(toMonthSpinner.getValue()) +"-"+ String.valueOf(toDaySpinner.getValue());
-			
-				DB_Handler db = new DB_Handler();
-				int r = db.createPDF(client, account, From, To);
-				if( r == 1 ) 
-					JOptionPane.showMessageDialog(f, "E-Statement is downloaded");
-				else
-					JOptionPane.showMessageDialog(f, "Error in downloading the e-statement");
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				//openAccountantMenu(frame, accountant);
-			}
-		});
-		
-		// Main Menu Button
-		JButton btnMM = new JButton("Main Menu");
-		btnMM.setBackground( new Color(0, 204, 153) );
-		btnMM.setForeground(Color.white);
-		btnMM.setBounds(50,400,100, 30);
-		f.add(btnMM);
-		
-		// function to be executed when Main Menu Button is clicked
-		btnMM.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				openClientMenu(frame, client, account);
-			}
-		});
-		
-		// Sign Out Button
-		JButton btn_sign_out = new JButton("Sign Out");
-		btn_sign_out.setBackground( new Color(0, 204, 153) );
-		btn_sign_out.setForeground(Color.white);
-		btn_sign_out.setBounds(650,30,100, 30);
-		f.add(btn_sign_out);
-		
-		btn_sign_out.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				Login_Account user = new Login_Account();
-				openSignInForm(frame, user);
-			}
-		});
-		
-		// displaying the new panel on frame	
-		f.setLayout(null); 
-		frame.setContentPane(f);
-		frame.setVisible(true);		
-	}
-
-	
-	
-	
-	
 	// client screen to change password of his login id
 	void open_change_password_form(JFrame frame, Client client, Bank_Account account)
 	{
@@ -2239,13 +2181,6 @@ public class GUI {
 		btnChequeDeposit.setBounds(530,180,150, 40);
 		f.add(btnChequeDeposit);
 		
-		// E-Statement button
-		JButton btnEStatement = new JButton("Issue E-Statement");
-		btnEStatement.setBackground( new Color(0, 204, 153) );
-		btnEStatement.setForeground(Color.white);
-		btnEStatement.setBounds(300,250,150, 40);
-		f.add(btnEStatement);
-		
 		// function to be executed when Deposit button is clicked
 		btnDeposit.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2273,17 +2208,6 @@ public class GUI {
 				frame.repaint();
 				frame.validate();
 				chequeDeposit(frame, accountant);
-			}
-		});
-		
-	
-		// function to be executed when EStatement Button is clicked
-		btnEStatement.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				searchForm(frame, accountant, 3);
 			}
 		});
 		
@@ -2396,8 +2320,6 @@ public class GUI {
 							depositCash(frame, accountant, client, account);
 						else if( case_ == 2 )
 							withdrawCash(frame, accountant, client, account);
-						else if( case_ == 3 )
-							eStatement(frame, accountant, client, account);
 					}
 				}
 				
@@ -2706,198 +2628,6 @@ public class GUI {
 		frame.setVisible(true);
 	}
 
-	
-	
-	
-	
-	// view e-statement screen
-	void eStatement(JFrame frame, Accountant accountant, Client client, Bank_Account account) {
-		JPanel f = new JPanel();
-		f.setBackground(Color.white);
-		
-		// E-Statement Label
-		JLabel lEStatement = new JLabel("E-Statement");
-		lEStatement.setFont( lEStatement.getFont().deriveFont(30f) );
-		lEStatement.setBounds(50,30,250, 40);
-		f.add(lEStatement);
-		
-		// Name Label
-		JLabel lName = new JLabel( "Client Name: " + client.getFName() + " " + client.getLName() );
-		lName.setBounds(50,70,150, 40);
-		f.add(lName);
-			
-		// CNIC Label
-		JLabel lCnic = new JLabel( "CNIC: " + client.getCNIC() );
-		lCnic.setBounds(50,90,150, 40);
-		f.add(lCnic);
-		
-		// Account Number Label
-		JLabel lAccNum = new JLabel( "Account Number: " + account.getAccountNum() );
-		lAccNum.setBounds(450,70,150, 40);
-		f.add(lAccNum);
-		
-		// Name Label
-		JLabel lType = new JLabel( "Account Type: " + account.getType() );
-		lType.setBounds(450,90,150, 40);
-		f.add(lType);
-		
-		// From Date Label
-		JLabel lFrom = new JLabel("From   ( DD : MM : YY )");
-		lFrom.setBounds(50,120,150, 40);
-		f.add(lFrom);
-		
-		// To Date Label
-		JLabel lTo = new JLabel("To   ( DD : MM : YY )");
-		lTo.setBounds(450,120,150, 40);
-		f.add(lTo);
-		
-		// Day, Month and Year for From Date
-		SpinnerModel fromDayValues =  new SpinnerNumberModel(21, 1, 31, 1);  
-	    JSpinner fromDaySpinner = new JSpinner(fromDayValues);   
-	    fromDaySpinner.setBounds(50,150,40,25);    
-	    f.add(fromDaySpinner); 
-	    SpinnerModel fromMonthValues =  new SpinnerNumberModel(12, 1, 12, 1);  
-	    JSpinner fromMonthSpinner = new JSpinner(fromMonthValues);   
-	    fromMonthSpinner.setBounds(100,150,40,25);    
-	    f.add(fromMonthSpinner); 
-	    SpinnerModel fromYearValues =  new SpinnerNumberModel(2020, 2018, 2021, 1);  
-	    JSpinner fromYearSpinner = new JSpinner(fromYearValues);   
-	    fromYearSpinner.setBounds(150,150,55,25);    
-	    f.add(fromYearSpinner); 
-	    
-	    // Day, Month and Year for From Date
- 		SpinnerModel toDayValues =  new SpinnerNumberModel(30, 1, 31, 1);  
- 	    JSpinner toDaySpinner = new JSpinner(toDayValues);   
- 	    toDaySpinner.setBounds(450,150,40,25);    
- 	    f.add(toDaySpinner); 
- 	    SpinnerModel toMonthValues =  new SpinnerNumberModel(12, 1, 12, 1);  
- 	    JSpinner toMonthSpinner = new JSpinner( toMonthValues);   
- 	    toMonthSpinner.setBounds(500,150,40,25);    
- 	    f.add(toMonthSpinner); 
- 	    SpinnerModel toYearValues =  new SpinnerNumberModel(2020, 2018, 2021, 1);  
- 	    JSpinner toYearSpinner = new JSpinner(toYearValues);   
- 	    toYearSpinner.setBounds(550,150,55,25);    
- 	    f.add(toYearSpinner); 
- 	    
- 		JButton btnEStatement = new JButton("Get E-Statement");
-		btnEStatement.setBackground( new Color(0, 204, 153) );
-		btnEStatement.setForeground(Color.white);
-		btnEStatement.setBounds(50,200,150, 30);
-		f.add(btnEStatement);
- 	    
-		JButton btnDownload = new JButton("Download");
-		btnDownload.setBackground( new Color(0, 204, 153) );
-		btnDownload.setForeground(Color.white);
-		btnDownload.setBounds(450,200,100, 30);
-		f.add(btnDownload);
-		btnDownload.setEnabled(false);
-		
-		// table for transaction history records
-		DefaultTableModel tableModel = new DefaultTableModel();
-		JTable table=new JTable(tableModel);   
-		tableModel.addColumn("Serial No");
-		tableModel.addColumn("Amount");
-		tableModel.addColumn("Type");
-		tableModel.addColumn("Date");
-		tableModel.addColumn("Time");
-		tableModel.addColumn("Account Number");
-		tableModel.addColumn("Reciever Account Number");
-		tableModel.addColumn("Cheque No");
-		table.setEnabled(false);
-		JScrollPane sp=new JScrollPane(table);
-		sp.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		sp.setBounds(50,250,700,150);  
-		f.add(sp);
-		sp.setVisible(false);
-		
-		// dunction to be executed when Get EStatement Button is clicked
-		btnEStatement.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tableModel.setRowCount(0);
-				
-				String From = String.valueOf(fromYearSpinner.getValue()) +"-"+ String.valueOf(fromMonthSpinner.getValue()) +"-"+ String.valueOf(fromDaySpinner.getValue());
-				String To = String.valueOf(toYearSpinner.getValue()) +"-"+ String.valueOf(toMonthSpinner.getValue()) +"-"+ String.valueOf(toDaySpinner.getValue());
-			
-				List<Transaction_History> list = accountant.getTransactions( account.getAccountNum(), From, To);
-				if( list.size() > 0 ) {
-					for( Transaction_History th: list) {
-						tableModel.addRow(new Object[] { th.getSerialNo(), th.getAmount(), th.getType(), th.getDate(), th.getTime(), th.getAccountNumber(), th.getRecvAccNum(), th.getChequeNum() });
-					}	
-					tableModel.fireTableDataChanged();
-					sp.setVisible(true);
-					//btnEStatement.setEnabled(false);
-					btnDownload.setEnabled(true);
-				}
-				else {
-					btnDownload.setEnabled(false);
-				}
-			}
-		});
-
-		// function to be executed when Download Button is clicked
-		btnDownload.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String From = String.valueOf(fromYearSpinner.getValue()) +"-"+ String.valueOf(fromMonthSpinner.getValue()) +"-"+ String.valueOf(fromDaySpinner.getValue());
-				String To = String.valueOf(toYearSpinner.getValue()) +"-"+ String.valueOf(toMonthSpinner.getValue()) +"-"+ String.valueOf(toDaySpinner.getValue());
-			
-				DB_Handler db = new DB_Handler();
-				int r = db.createPDF(client, account, From, To);
-				if( r == 1 ) 
-					JOptionPane.showMessageDialog(f, "E-Statement is downloaded");
-				else
-					JOptionPane.showMessageDialog(f, "Error in downloading the e-statement");
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				openAccountantMenu(frame, accountant);
-			}
-		});
-		
-		// Main Menu Button
-		JButton btn_mm = new JButton("Main Menu");
-		btn_mm.setBackground( new Color(0, 204, 153) );
-		btn_mm.setForeground(Color.white);
-		btn_mm.setBounds(50,400,100, 30);
-		f.add(btn_mm);
-		
-		// function to be executed when Main Menu Button is clicked
-		btn_mm.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				openAccountantMenu(frame, accountant);
-			}
-		});
-				
-		// Sign Out Button
-		JButton btn_sign_out = new JButton("Sign Out");
-		btn_sign_out.setBackground( new Color(0, 204, 153) );
-		btn_sign_out.setForeground(Color.white);
-		btn_sign_out.setBounds(650,30,100, 30);
-		f.add(btn_sign_out);
-		
-		// function to be executed when Sign Out Button is clicked
-		btn_sign_out.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.remove(f);
-				frame.repaint();
-				frame.validate();
-				Login_Account user = new Login_Account();
-				openSignInForm(frame, user);
-			}
-		});
-		
-		// displaying the new panel on frame	
-		f.setLayout(null); 
-		frame.setContentPane(f);
-		frame.setVisible(true);		
-	}
-
-	
-	
-	
-	
 	// cheque deposit screen
 	void chequeDeposit(JFrame frame, Accountant accountant) {
 		JPanel f = new JPanel();
