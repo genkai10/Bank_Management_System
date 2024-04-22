@@ -762,59 +762,27 @@ public class DB_Handler {
 		return list;
 	}
 	
-	
-	
-	public int createPDF( Client client, Bank_Account account, String From, String To ) { 
-		int res = 0;
+	public List<Transaction_History> getAllTransactions() {
+		List<Transaction_History> list=new ArrayList<Transaction_History>();  
 		try {	
-			
-			String html_start = "<body> <h1>ABC Bank</h1><h4>F9 Branch, Islamabad</h4>"
-					+ "<p>"+client.getFName()+" "+client.getLName()+"<br>Account Number: "+account.getAccountNum()+"<br>Current Account"
-					+ "<br>Transaction Dates: "+From+" - "+To+"</p><h4>E Bank Statement</h4>"
-					+ "<table border=1 ><tr>"
-					+ "<th width=300px>Serial No</th><th width=300px >Amount</th><th width=300px >Type</th><th width=300px >Date</th><th width=300px >Time</th><th width=300px >Account Num</th><th width=300px >Reciever Account Num</th><th width=300px >Cheque Num</th>"
-					+ "</tr>";
-			String html_end = "</table></body><style>table { text-align: center; }</style>";
-			String html_data="";
-			
 			// finding the transactions
-			String tQuery = "Select * From bank_schema.transaction_history Where ( account_num = "+account.getAccountNum()+" or recv_acc_num = "+account.getAccountNum()+" ) and ( date between '"+From+"'"
-					+ " and '"+To+"')";
+			String tQuery = "Select * From bank_schema.transaction_history";
 			System.out.println(tQuery);
 			Statement tSt = conn.createStatement();
 			ResultSet tRs = tSt.executeQuery(tQuery);
-			int rows = 0;
+			System.out.println();
 			while( tRs.next() ) {
-				rows++;
-				html_data += "<tr><td>"+tRs.getString("serial_no")+"</td>"
-						+ "<td>"+tRs.getString("amount")+"</td>"
-						+ "<td>"+tRs.getString("type")+"</td>"
-						+ "<td>"+tRs.getString("date")+"</td>"
-						+ "<td>"+tRs.getString("time")+"</td>"
-						+ "<td>"+tRs.getString("account_num")+"</td>"
-						+ "<td>"+tRs.getString("recv_acc_num")+"</td>"
-						+ "<td>"+tRs.getString("cheque_num")+"</td></tr>";
+	        	// removing old instance of client and adding new instance with information
+				Transaction_History th = new Transaction_History( tRs.getString("serial_no"), tRs.getString("amount"), tRs.getString("type"), tRs.getString("date"), tRs.getString("time"), tRs.getString("account_num"), tRs.getString("recv_acc_num"), tRs.getString("cheque_num") );
+				System.out.print("@-");
+				list.add( th );
 	        }
-			if( rows > 0 ) {
-				String html = html_start + html_data + html_end;
-				try {
-					String file_name = "E_Statement_" + java.time.LocalDateTime.now() + ".pdf";
-					file_name = file_name.replaceAll(":", "_");
-			    	HtmlConverter.convertToPdf( html, new FileOutputStream(file_name));
-			        res = 1;
-			    }
-				catch( Exception e) {
-					System.out.println("Unknown error");
-				}
-			}
 		}
 		catch (SQLException e) {
 			System.out.println("Something went wrong");
 		}
-		return res;
-	}
-	
-	
+		return list;
+	}	
 	
 	public int chequeDeposit( String accNum, String chequeNum, int amount ) { 
 		int res = 0;
