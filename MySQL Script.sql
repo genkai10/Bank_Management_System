@@ -140,6 +140,7 @@ Insert into bank_schema.login_account values (NULL, "faizan211", "909094", 'A');
 Insert into bank_schema.login_account values (NULL, "ahmed107", "tom891", 'C');
 Insert into bank_schema.login_account values (NULL, "maria_y70", "green8", 'C');
 Insert into bank_schema.login_account values (NULL, "daniel345", "90jeep", 'C');
+Insert into bank_schema.login_account values (NULL, "david1411", "sand12", "K");
 
 update bank_schema.employee set login_id = 60000 where employee_id = 20000;
 update bank_schema.employee set login_id = 60001 where employee_id = 20001;
